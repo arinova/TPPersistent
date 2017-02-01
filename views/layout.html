@@ -30,7 +30,38 @@
     {% block content %}
     {% endblock %}
 
-    <script src="/jquery/jquery.min.js"></script>
+    <script src="/jquery/jquery.min.js">
+    </script>
+    <script>
+        var hotels;
+        var restaurants;
+        var activities;
+
+        var getHotels = $.get('/api/hotels')
+          .then(function(foundHotels) {
+            console.log("AJAX Hotels:", foundHotels);
+            hotels = foundHotels;
+          })
+          .catch(console.error);
+
+        var getRestaurants = $.get('/api/restaurants')
+          .then(function(foundRestaurants) {
+            restaurants = foundRestaurants;
+          })
+          .catch(console.error);
+
+        var getActivities = $.get('/api/activities')
+          .then(function(foundActivities) {
+            activities = foundActivities;
+          })
+          .catch(console.error);
+
+        Promise.all([getHotels, getRestaurants, getActivities])
+          .then(function() {
+            $("body").append("<script src='/js/options.js'>" + "</s" + "cript>");
+          })
+          .catch(console.error);
+    </script>
     <script src="/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfQxgWt-LSZcEmTEN8581Uq9SzZHnpuys"></script>
     <script src="/js/utils.js"></script>
@@ -39,7 +70,6 @@
     <script src="/js/day.js"></script>
     <script src="/js/attraction.js"></script>
     <script src="/js/attractions.js"></script>
-    <script src="/js/options.js"></script>
     <script src="/js/main.js"></script>
 
   </body>
