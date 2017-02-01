@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var swig = require('swig');
 var path = require('path');
 var attractionsRouter = require('./routes/api/attractions.js');
+var daysRouter=require('./routes/api/days.js');
 
 var db = require('./models').db;
 
@@ -29,6 +30,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 // serve dynamic routes
 app.use(require('./routes'));
 app.use(attractionsRouter);
+app.use(daysRouter);
 
 // failed to catch req above means 404, forward to error handler
 app.use(function (req, res, next) {
@@ -50,7 +52,7 @@ app.use(function (err, req, res, next) {
 var port = 3000;
 app.listen(port, function () {
   console.log('The server is listening closely on port', port);
-  db.sync()
+  db.sync({})
   .then(function () {
     console.log('Synchronated the database');
   })
