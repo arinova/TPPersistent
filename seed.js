@@ -7,6 +7,7 @@ var Place = require('./models/place');
 var Hotel = require('./models/hotel');
 var Restaurant = require('./models/restaurant');
 var Activity = require('./models/activity');
+var Day=require('./models/day');
 
 var data = {
   hotel: [
@@ -62,6 +63,12 @@ var data = {
   ]
 };
 
+var days=  [
+    {number: 1},
+    {number: 2},
+    {number: 3}
+  ];
+
 db.sync({force: true})
 .then(function () {
   console.log("Dropped old data, now inserting data");
@@ -73,8 +80,19 @@ db.sync({force: true})
       });
     });
   });
+}).then(function(){   //attempt to add days to db
+  return Promise.map(days, function(day){
+    return db.model("day").build(day);
+  });
 })
-.then(function () {
+.then(function(builtDays){
+  return builtDays[0].save()
+    .then(function(){
+      return builtDays[1].save();
+    }).then(function(){
+      return builtDays[2].save();
+    })
+}).then(function () {
   console.log("Finished inserting data");
 })
 .catch(function (err) {

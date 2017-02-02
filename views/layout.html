@@ -46,21 +46,50 @@
 
         var getRestaurants = $.get('/api/restaurants')
           .then(function(foundRestaurants) {
+                    console.log("AJAX res:", foundRestaurants);
             restaurants = foundRestaurants;
           })
           .catch(console.error);
 
         var getActivities = $.get('/api/activities')
           .then(function(foundActivities) {
+                    console.log("AJAX act:", foundActivities);
             activities = foundActivities;
           })
           .catch(console.error);
 
         Promise.all([getHotels, getRestaurants, getActivities])
           .then(function() {
+            console.log("all attractions loaded");
             $("body").append("<script src='/js/options.js'>" + "</s" + "cript>");
           })
           .catch(console.error);
+
+
+          $.get('/api/days')
+          .then(function (data) { console.log('Days GET response data', data) })
+          .catch(console.error.bind(console));
+          // should log an empty array
+          // $.post('/api/days')
+          // .then(function (data) { console.log('POST response data', data) })
+          // .catch(console.error.bind(console));
+
+          // $.ajax({
+          //   url: '/api/days',
+          //   dataType: 'json',
+          //   type: 'post',
+          //   contentType: 'application/json',
+          //   data: JSON.stringify({number: 1}),
+          //   success: function (data) { console.log('POST response data', data) }
+          //
+          // });
+
+          // // should log a new day
+          // $.get('/api/days')
+          // .then(function (data) { console.log('GET response data', data) })
+          // .catch(console.error.bind(console));
+          // // should now log an array with the new day in it
+
     </script>
     <script src="/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfQxgWt-LSZcEmTEN8581Uq9SzZHnpuys"></script>
